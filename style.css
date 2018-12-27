@@ -1,0 +1,292 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: Tahoma, Arial, sans-serif;
+    box-sizing: border-box;
+    background: #564e47;
+    width: 100%;
+    min-width: 640px;
+    text-align: center;
+}
+
+a {
+    color: #9A998E;
+    font-size: 20px;
+    line-height: 1.2em;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+h3 {
+    font-size: 28px;
+    line-height: 1.5em;
+    font-weight: normal;
+}
+
+#game {
+    width: 572px;
+    height: 350px;
+    margin: 0 auto;
+    background: transparent url('./img/game-bg.jpg') center center no-repeat;
+    position: relative;
+}
+
+#basket {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    background: transparent center no-repeat;
+}
+#basket.x0.y1 {
+    width: 82px;
+    height: 78px;
+    background-image: url('./img/basket/basket-p-0-1.png');
+    top: 158px;
+    left: 126px;
+}
+#basket.x1.y1 {
+    width: 82px;
+    height: 78px;
+    background: url('./img/basket/basket-p-1-1.png');
+    top: 165px;
+    right: 123px;
+}
+#basket.x0.y0 {
+    width: 85px;
+    height: 65px;
+    background: url('./img/basket/basket-p-0-0.png');
+    left: 124px;
+    bottom: 50px;
+}
+#basket.x1.y0 {
+    width: 85px;
+    height: 65px;
+    background: url('./img/basket/basket-p-1-0.png');
+    right: 126px;
+    bottom: 44px;
+}
+
+#wolf {
+    width: 50px;
+    height: 140px;
+    position: absolute;
+    background: transparent center no-repeat;
+}
+#wolf.x0 {
+    width: 98px;
+    height: 152px;
+    top: 164px;
+    left: 179px;
+    background-image: url('./img/wolf/wolf-p-0.png');
+}
+#wolf.x1 {
+    width: 90px;
+    height: 146px;
+    top: 166px;
+    right: 186px;
+    background-image: url('./img/wolf/wolf-p-1.png');
+}
+
+.egg {
+    width: 15px;
+    height: 15px;
+    background: transparent url('./img/egg/egg.png') center center no-repeat;
+    position: absolute;
+}
+.egg.e-0.pos-0,
+.egg.e-1.pos-0,
+.egg.e-2.pos-0,
+.egg.e-3.pos-0 {
+    display: none;
+}
+
+/* Egg bottom-left */
+.egg.e-0.pos-1 {
+    top: 195px;
+    left: 47px;
+    transform: rotate(65deg);
+}
+.egg.e-0.pos-2 {
+    top: 205px;
+    left: 62px;
+    transform: rotate(118deg);
+}
+.egg.e-0.pos-3 {
+    top: 215px;
+    left: 79px;
+    transform: rotate(162deg);
+}
+.egg.e-0.pos-4 {
+    top: 223px;
+    left: 96px;
+    transform: rotate(-93deg);
+}
+.egg.e-0.pos-5 {
+    top: 235px;
+    left: 108px;
+    transform: rotate(-7deg);
+}
+
+/* Egg top-left */
+.egg.e-1.pos-1 {
+    top: 122px;
+    left: 47px;
+    transform: rotate(56deg);
+}
+.egg.e-1.pos-2 {
+    top: 132px;
+    left: 62px;
+    transform: rotate(108deg);
+}
+.egg.e-1.pos-3 {
+    top: 142px;
+    left: 80px;
+    transform: rotate(192deg);
+}
+.egg.e-1.pos-4 {
+    top: 151px;
+    left: 95px;
+    transform: rotate(-62deg);
+}
+.egg.e-1.pos-5 {
+    top: 160px;
+    left: 110px;
+}
+
+/* Egg top-right */
+.egg.e-2.pos-1 {
+    top: 122px;
+    right: 51px;
+    transform: rotate(-10deg);
+}
+.egg.e-2.pos-2 {
+    top: 132px;
+    right: 66px;
+    transform: rotate(-56deg);
+}
+.egg.e-2.pos-3 {
+    top: 142px;
+    right: 84px;
+    transform: rotate(-128deg);
+}
+.egg.e-2.pos-4 {
+    top: 149px;
+    right: 99px;
+    transform: rotate(140deg);
+}
+.egg.e-2.pos-5 {
+    top: 160px;
+    right: 113px;
+    transform: rotate(58deg);
+}
+
+/* Egg bottom-right */
+.egg.e-3.pos-1 {
+    top: 195px;
+    right: 50px;
+    transform: rotate(-14deg);
+}
+.egg.e-3.pos-2 {
+    top: 204px;
+    right: 66px;
+    transform: rotate(-53deg);
+}
+.egg.e-3.pos-3 {
+    top: 215px;
+    right: 83px;
+    transform: rotate(-96deg);
+}
+.egg.e-3.pos-4 {
+    top: 223px;
+    right: 100px;
+    transform: rotate(152deg);
+}
+.egg.e-3.pos-5 {
+    top: 235px;
+    right: 112px;
+    transform: rotate(68deg);
+}
+
+/* score */
+#score {
+    position: absolute;
+    top: 48px;
+    left: 326px;
+    width: 123px;
+    height: 47px;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+#score .li {
+    width: 31px;
+    height: 47px;
+    margin: 0 0 0 -2px;
+    background: transparent url('./img/score/nums.png');
+    flex: 1;
+}
+
+#score .li.n-0 {
+    background-position: 0px 0px;
+}
+#score .li.n-1 {
+    background-position: -31px 0px;
+}
+#score .li.n-2 {
+    background-position: -62px 0px;
+}
+#score .li.n-3 {
+    background-position: -93px 0px;
+}
+#score .li.n-4 {
+    background-position: -124px 0px;
+}
+#score .li.n-5 {
+    background-position: -155px 0px;
+}
+#score .li.n-6 {
+    background-position: -186px 0px;
+}
+#score .li.n-7 {
+    background-position: -217px 0px;
+}
+#score .li.n-8 {
+    background-position: -248px 0px;
+}
+#score .li.n-9 {
+    background-position: -279px 0px;
+}
+
+#loss {
+    width: 120px;
+    height: 32px;
+    background: transparent url('./img/loss/loss.png') left top no-repeat;
+    position: absolute;
+    top: 114px;
+    left: 326px;
+}
+#loss.loss0 {
+    width: 0;
+}
+#loss.loss1 {
+    width: 40px;
+}
+#loss.loss2 {
+    width: 80px;
+}
+#loss.loss3 {
+    width: 120px;
+}
+
+#message {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(86, 78, 71, .5);
+}

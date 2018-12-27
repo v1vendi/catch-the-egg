@@ -1,83 +1,43 @@
-/*
- *  "Catch the Egg" JavaScript Game
- *  source code  : https://github.com/shtange/catch-the-egg
- *  play it here : https://shtange.github.io/catch-the-egg/
- *
- *  Copyright 2015, Yurii Shtanhei
- *  GitHub : https://github.com/shtange/
- *  Habr   : https://habrahabr.ru/users/shtange/
- *  email  : y.shtanhei@gmail.com
- *
- *  Licensed under the MIT license:
- *  http://www.opensource.org/licenses/MIT
- */
+const SCORE_DIGITS = 4
+const HTMLredraw = {
+    updateEggPosition(data) {
+        const egg = document.querySelector(`.egg.e-${data.egg}`)
+        egg.className = `egg e-${data.egg} pos-${data.position}`
+    },
 
-function HTMLredraw() {
-  this.bodyWrap = document.querySelector('body');
-  this.gameWrap = document.querySelector('#game-wrap');
-  this.scoreWrap = document.querySelector('#score');
-  this.messageWrap = document.querySelector('#message');
-  this.scoreNums = 4;
+    updateBasketPosition(data) {
+        document.getElementById('wolf').className = `x${data.x}`
+        document.getElementById('basket').className = `x${data.x} y${data.y}`
+    },
+
+    updateLossCount(data) {
+        document.getElementById('loss').className = `loss${data.loss}`
+    },
+
+    updateScore(value) {
+        var elements = document.getElementById('score').getElementsByClassName('li')
+        var score = value.toString()
+        var emptyElements = (SCORE_DIGITS - score.length)
+
+        for (var i = 0; i < elements.length; i++) {
+            var num = (i < emptyElements) ? 0 : parseInt(score.charAt(i - emptyElements))
+            elements[i].className = `li n-${num}`
+        }
+    },
+
+    gameOver() {
+        this.showMessage('Game Over')
+    },
+
+    gameWin() {
+        this.showMessage('You\'ve Won!')
+    },
+
+    showMessage(message) {
+        var wrap = document.createElement('div')
+        wrap.id = 'message'
+        wrap.innerHTML = `<h3>${message}</h3><p>Press R to restart</p>`
+        
+        document.getElementById('game').appendChild(wrap)
+    },
 }
-
-HTMLredraw.prototype.updateEggPosition = function(data) {
-  this.changeAttributesValue(['data-egg-' + data.egg], [data.position]);
-};
-
-HTMLredraw.prototype.updateBasketPosition = function(data) {
-  this.changeAttributesValue(['data-bx', 'data-by'], [data.x, data.y]);
-};
-
-HTMLredraw.prototype.changeAttributesValue = function(attributes, values) {
-  if (attributes instanceof Array && values instanceof Array && attributes.length == values.length) {
-    for (var i = 0; i < attributes.length; i++) {
-      this.gameWrap.setAttribute(attributes[i], values[i]);
-    }
-  }
-};
-
-HTMLredraw.prototype.updateScore = function(data) {
-  var elements = this.scoreWrap.getElementsByTagName('li');
-  var score = data.value.toString();
-  var empty = (this.scoreNums - score.length);
-
-  for (var i = 0; i < elements.length; i++) {
-    var num = (i < empty) ? 0 : parseInt(score.charAt(i - empty));
-    elements[i].className = 'n-' + num;
-  }
-};
-
-HTMLredraw.prototype.updateLossCount = function(data) {
-  this.changeAttributesValue(['data-loss'], [data.loss]);
-};
-
-HTMLredraw.prototype.gameOver = function() {
-  var msg = this.getMessage('Game Over');
-
-  this.messageWrap.show();
-  this.messageWrap.appendChild(msg);
-};
-
-HTMLredraw.prototype.gameWin = function() {
-  var msg = this.getMessage('You\'ve Won!');
-
-  this.messageWrap.show();
-  this.messageWrap.appendChild(msg);
-};
-
-HTMLredraw.prototype.getMessage = function(message) {
-  var data = { h3: message, p: 'Press <b>R</b> to restart' };
-
-  var wrap = document.createElement('div');
-  for (var tag in data) {
-    var elem = document.createElement(tag);
-    elem.innerHTML = data[tag];
-    wrap.appendChild(elem);
-  }
-
-  return wrap;
-};
-
-HTMLredraw.prototype.mobileVersion = function() {
-  this.bodyWrap.className = 'is-mobile';
-};

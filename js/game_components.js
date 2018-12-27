@@ -1,120 +1,47 @@
-/*
- *  "Catch the Egg" JavaScript Game
- *  source code  : https://github.com/shtange/catch-the-egg
- *  play it here : https://shtange.github.io/catch-the-egg/
- *
- *  Copyright 2015, Yurii Shtanhei
- *  GitHub : https://github.com/shtange/
- *  Habr   : https://habrahabr.ru/users/shtange/
- *  email  : y.shtanhei@gmail.com
- *
- *  Licensed under the MIT license:
- *  http://www.opensource.org/licenses/MIT
- */
+const Grid = {
+    list: [
+        { x: 0, y: 0 },
+        { x: 0, y: 1 },
+        { x: 1, y: 1 },
+        { x: 1, y: 0 },
+    ],
+    ids: [0, 1, 2, 3],
+    fallingIds: [],
 
-/*
- *  Grid
- */
-function Grid(count) {
-  this.count = count;
-  this.list = {};
+    hold(key) {
+        this.fallingIds.push(key)
+    },
 
-  this.avail = [];
-  this.hold = [];
-
-  this.init();
+    release(key) {
+        this.fallingIds = this.fallingIds.filter(i => i !== key)
+    },
+    
+    getAvailableIds() {
+        return this.ids.filter(i => !this.fallingIds.includes(i))
+    },
 }
 
-Grid.prototype.init = function() {
-  for (var i = 0; i < this.count; i++) {
-    var value = {};
-
-    if(i%2 == 0) {
-      value.x = (i > 0) ? 1 : 0;
-      value.y = (i > 0) ? 1 : 0;
-    } else {
-      value.x = (i > this.count/2) ? 1 : 0;
-      value.y = (i > this.count/2) ? 0 : 1;
+const EGG_STEPS = 5
+class Egg {
+    constructor(id, callback) {
+        this.id = id
+        this.step = 0
+        this.callback = callback
     }
 
-    this.avail.push(i);
-    this.list[i] = value;
-  }
-};
+    run(timeout) {
+        this.timer = setInterval(() => this.nextStep(), timeout)
+    }
 
-Grid.prototype.onHold = function(key) {
-  this.hold.push(key);
-};
+    nextStep() {
+        this.step++
+        HTMLredraw.updateEggPosition({ egg: this.id, position: this.step })
 
-Grid.prototype.unHold = function(key) {
-  var index = this.hold.indexOf(key);
-  this.hold.splice(index, 1);
-};
+        if (this.step <= EGG_STEPS) return
 
-
-/*
- *  Chicken
- */
-function Chicken(key, position) {
-  this.key = key;
-  this.x = position.x;
-  this.y = position.y;
-
-  this.egg = new Egg(this.key, 0);
+        clearInterval(this.timer)
+        this.step = 0
+        HTMLredraw.updateEggPosition({ egg: this.id, position: 0 })
+        this.callback(this.id)
+    }
 }
-
-/*
- *  Egg
- */
-function Egg(chicken, step, point) {
-  this.chicken = chicken;
-  this.step = step;
-  this.point = point;
-  this.amount = 5;
-
-  this.callback;
-  this.timer;
-}
-
-Egg.prototype.run = function(speed, callback) {
-  this.callback = callback;
-
-  var self = this;
-  this.timer = setInterval(function() {
-    self.nextStep();
-  }, speed);
-};
-
-Egg.prototype.nextStep = function() {
-  ++this.step;
-
-  this.callback('updateEggPosition', { egg: this.chicken, position: this.step });
-
-  if (this.step > this.amount) {
-    clearInterval(this.timer);
-    this.step = 0;
-    this.callback('updateEggPosition', { egg: this.chicken, position: 0 });
-    this.callback('unHoldChicken', { egg: this.chicken });
-    this.callback('updateScore', { egg: this.chicken, point: this.point });
-  }
-};
-
-
-/*
- *  Basket
- */
-function Basket(position) {
-  this.x = position.x;
-  this.y = position.y;
-
-  this.callback;
-}
-
-Basket.prototype.updatePosition = function (position, callback) {
-  this.callback = callback;
-
-  this.x = position.x;
-  this.y = position.y;
-
-  this.callback('updateBasketPosition', { x: this.x, y: this.y });
-};
